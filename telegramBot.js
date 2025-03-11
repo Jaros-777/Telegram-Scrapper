@@ -1,11 +1,16 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
+import express from "express"
 import { searchInPracuj } from "./pracuj.js";
 
 dotenv.config();
+
+const port = process.env.PORT ||3000;
+const app = express();
+
 const token = process.env.TELEGRAM_TOKEN;
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token);
 
 const chatId = process.env.USER_ID;
 
@@ -38,5 +43,13 @@ function mainTelegram() {
 }
 
 mainTelegram();
-// const mes = {"tekst": "testowy tekst", "kolejny":"tekst"}
-// telegramSendMessage(JSON.stringify(mes));
+
+// Endpoint Express - nasłuchiwanie na porcie
+app.get("/", (req, res) => {
+  res.send("Serwer działa. Bot Telegram nasłuchuje.");
+});
+
+// Uruchomienie serwera Express
+app.listen(port, () => {
+  console.log(`Serwer nasłuchuje na porcie ${port}`);
+});
