@@ -10,7 +10,7 @@ const app = express();
 
 const token = process.env.TELEGRAM_TOKEN;
 
-const bot = new TelegramBot(token);
+const bot = new TelegramBot(token, { polling: true });
 
 const chatId = process.env.USER_ID;
 
