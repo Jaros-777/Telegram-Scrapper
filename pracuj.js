@@ -5,7 +5,7 @@ const webLink = ["https://www.pracuj.pl/"];
 let jobOffert = [];
 
 const searchSpecificOffers = async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   await page.goto(webLink[0], { waitUntil: "networkidle2" });
@@ -177,22 +177,6 @@ const searchSpecificDetailsJobOffert = async (jobUrl, browser) => {
   });
 
   
-
-  // let skills = "";
-  // document
-  //   .querySelectorAll('span[data-test="item-technologies-expected"]')
-  //   .forEach((e) => {
-  //     //skills.push(e.innerHTML);
-  //     skills += e.innerHTML +"\n";
-  //   });
-  // detailsOffert.push(skills);
-
-  // let require = "";
-  // document.querySelectorAll("li.tkzmjn3").forEach((e) => {
-  //   //require.push(e.textContent.trim()); // Użyj textContent zamiast innerHTML
-  //   require += e.textContent.trim() + "\n";
-  // });
-  // detailsOffert.push(require);
 
   detailsOffert["title"] = getJobTitle;
   detailsOffert["skills"] = getJobSkills;

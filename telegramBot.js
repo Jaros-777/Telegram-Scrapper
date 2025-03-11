@@ -42,7 +42,7 @@ function mainTelegram() {
   });
 }
 
-mainTelegram();
+
 
 // Endpoint Express - nasłuchiwanie na porcie
 app.get("/", (req, res) => {
@@ -52,4 +52,5 @@ app.get("/", (req, res) => {
 // Uruchomienie serwera Express
 app.listen(port, () => {
   console.log(`Serwer nasłuchuje na porcie ${port}`);
+  mainTelegram();
 });
