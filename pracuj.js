@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import { telegramSendMessage } from "./telegramBot.js";
 
 const webLink = ["https://www.pracuj.pl/"];
-let detailsJobOffert = [];
+let jobOffert = [];
 
 const searchSpecificOffers = async () => {
   const browser = await puppeteer.launch({ headless: false });
@@ -11,20 +11,20 @@ const searchSpecificOffers = async () => {
   await page.goto(webLink[0], { waitUntil: "networkidle2" });
 
   try {
-    // Sprawdź, czy przycisk akceptacji cookies jest widoczny i kliknij go
     await page.waitForSelector(".cookies_c1lmi0fl", { timeout: 200 });
     await page.click('button[data-test="button-submitCookie"]');
   } catch (error) {
-    console.log("Nie trzeba akceptować cookies");
+    console.log("There is no cookie window in main page");
   }
 
   try {
-    // sprawdz czyh okienk z biletami jest
     await page.waitForSelector(".popup_p1fe0zyi", { timeout: 200 });
     await page.click("span.popup_p1c6glb0");
   } catch (error) {
-    console.log("Nie ma okienka z reklamą");
+    console.log("There is no advert window in main page");
   }
+
+  //Selecting a categories
 
   await page.click('button[data-tab-value="It"]');
   await page.click(
@@ -96,12 +96,13 @@ const searchSpecificOffers = async () => {
     page.waitForNavigation({ waitUntil: "networkidle2" }),
   ]);
 
+  //You are in offerts page
+
   try {
-    // sprawdz czyh okienk z biletami jest
     await page.waitForSelector(".popup_p1fe0zyi", { timeout: 200 });
     await page.click("span.popup_p1c6glb0");
   } catch (error) {
-    console.log("No cookies prompt found or it was dismissed already.");
+    console.log("There is no advert window in offerts page");
   }
 
   const data = await page.evaluate(() => {
@@ -115,6 +116,7 @@ const searchSpecificOffers = async () => {
   });
 
   let linkJobList = data;
+
   //console.log(linkJobList);
 
   // await Promise.all(
@@ -124,13 +126,8 @@ const searchSpecificOffers = async () => {
   // )
   await searchSpecificDetailsJobOffert(linkJobList[0], browser);
   await searchSpecificDetailsJobOffert(linkJobList[1], browser);
-  await searchSpecificDetailsJobOffert(linkJobList[2], browser);
 
-  // for(let i=0; i < buforJobList.length ; i++)
-  // {
-  //   telegramSendMessage(JSON.stringify(buforJobList[i]));
-  // }
-  //await browser.close();
+  await browser.close();
 };
 
 const searchSpecificDetailsJobOffert = async (jobUrl, browser) => {
@@ -139,51 +136,102 @@ const searchSpecificDetailsJobOffert = async (jobUrl, browser) => {
   await page.goto(jobUrl, { waitUntil: "networkidle2" });
 
   try {
-    // Sprawdź, czy przycisk akceptacji cookies jest widoczny i kliknij go
     await page.waitForSelector(".cookies_c1lmi0fl", { timeout: 200 });
     await page.click('button[data-test="button-submitCookie"]');
   } catch (error) {
-    console.log("Nie trzeba akceptować cookies");
+    console.log("There is no cookie window in selected job offert");
   }
 
   try {
-    // sprawdz czyh okienk z biletami jest
     await page.waitForSelector(".popup_p1fe0zyi", { timeout: 200 });
     await page.click("span.popup_p1c6glb0");
   } catch (error) {
-    console.log("Nie ma okienka z reklamą");
+    console.log("There is no advert window in selected job offert");
   }
 
-  const details = await page.evaluate(() => {
-    let detailsOffert = [];
+  //const details = await page.evaluate((jobUrl) => {
+  let detailsOffert = {};
 
-    detailsOffert.push(
-      document.querySelector('h1[data-test="text-positionName"]').innerHTML
-    );
-
+  const getJobTitle = await page.evaluate(() => {
+    return document.querySelector(
+      'h1[data-test="text-positionName"]'
+    ).innerHTML;
+  });
+  const getJobSkills = await page.evaluate(() => {
     let skills = [];
     document
-      .querySelectorAll('span[data-test="item-technologies-expected"]')
-      .forEach((e) => {
-        skills.push(e.innerHTML);
-      });
-
-    let require = [];
-    document.querySelectorAll("span.tkzmjn3")
+    .querySelectorAll('span[data-test="item-technologies-expected"]')
     .forEach((e) => {
-      require.push(e.textContent.trim()); // Użyj textContent zamiast innerHTML
+      skills.push(e.innerHTML);
     });
 
-    detailsOffert.push(skills);
-    detailsOffert.push(require);
+    return skills;
+  });
+  const getJobRequire = await page.evaluate(() => {
+    let require = [];
+    document.querySelectorAll("li.tkzmjn3").forEach((e) => {
+        require.push(e.textContent.trim()); 
+      });
 
-    return detailsOffert;
+    return require;
   });
 
-  console.log(details);
-  //console.log( document.querySelector('h1[data-test="text-positionName"]').innerHTML);
-  //console.log( document.querySelectorAll('span[data-test="item-technologies-expected"]').innerHTML);
-  //console.log( document.querySelectorAll('span[data-test="b194hobg core_ig18o8w size-xlarge position-center"]').innerHTML);
+  
+
+  // let skills = "";
+  // document
+  //   .querySelectorAll('span[data-test="item-technologies-expected"]')
+  //   .forEach((e) => {
+  //     //skills.push(e.innerHTML);
+  //     skills += e.innerHTML +"\n";
+  //   });
+  // detailsOffert.push(skills);
+
+  // let require = "";
+  // document.querySelectorAll("li.tkzmjn3").forEach((e) => {
+  //   //require.push(e.textContent.trim()); // Użyj textContent zamiast innerHTML
+  //   require += e.textContent.trim() + "\n";
+  // });
+  // detailsOffert.push(require);
+
+  detailsOffert["title"] = getJobTitle;
+  detailsOffert["skills"] = getJobSkills;
+  detailsOffert["require"] = getJobRequire;
+  detailsOffert["jobUrl"] = jobUrl;
+
+
+
+  //return detailsOffert;
+  // });
+
+  //console.log(details);
+  jobOffert.push(detailsOffert);
 };
 
-searchSpecificOffers();
+export async function searchInPracuj() {
+  await searchSpecificOffers();
+
+  //console.log(jobOffert);
+
+  for (let item of jobOffert) {
+    //console.log("item " + item);
+    //let messageToSend = `${item.title}\n\n  ${item.skills}\n\n  ${item.require}\n\n ${item.jobUrl}`
+    let messageToSend = `${item.title}\n\n`
+    item.skills.forEach((skill)=>{
+      messageToSend += `- ${skill}\n`
+    })
+
+    messageToSend += `\n\n`
+    item.require.forEach((require)=>{
+      messageToSend += `- ${require}\n`
+    })
+    messageToSend += `\n\n`
+
+    messageToSend += `${item.jobUrl}`
+
+    console.log(messageToSend);
+    telegramSendMessage(messageToSend);
+  }
+}
+
+//searchInPracuj();

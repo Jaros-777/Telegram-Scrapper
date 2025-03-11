@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node telegramBot.js"
+    "start": "pkill -f node && node telegramBot.js",
+    "start:win": "taskkill /IM node.exe /F & node telegramBot.js"
   },
   "keywords": [],
   "author": "",
