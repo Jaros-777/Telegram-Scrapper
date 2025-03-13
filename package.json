@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pkill -f node && node telegramBot.js",
-    "start:win": "taskkill /IM node.exe /F & node telegramBot.js"
+    "start:win": "taskkill /IM node.exe /F & node telegramBot.js",
+    "postinstall": "echo Puppeteer installation - skipping browser download"
+  },
+  "puppeteer": {
+    "skip_chromium_download": true
   },
   "keywords": [],
   "author": "",

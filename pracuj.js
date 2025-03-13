@@ -9,12 +9,9 @@ const searchSpecificOffers = async () => {
 
   // Sprawdzamy, czy aplikacja działa na Render
   if (process.env.IS_RENDER === 'true') {
-    // Na Render używamy Chromium, ponieważ nie ma tam Chrome
     executablePath = "/usr/bin/google-chrome-stable"; 
   } else {
-    // Jeśli działamy lokalnie, sprawdzamy, czy Chrome jest zainstalowane
     try {
-      // Jeśli masz Puppeteer zainstalowane z opcją, która instaluje przeglądarkę, używamy domyślnej ścieżki
       executablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
       
     } catch (error) {
@@ -22,6 +19,8 @@ const searchSpecificOffers = async () => {
       throw error;
     }
   }
+  console.log("Ścieżka przeglądarki na serwerze:", executablePath);
+
 
 
   const browser = await puppeteer.launch({
