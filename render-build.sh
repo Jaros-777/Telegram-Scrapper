@@ -7,8 +7,8 @@ npm install
 # npm run build # Uncomment if potrzebne
 
 # Instalacja Google Chrome i brakujących zależności
-sudo apt-get update
-sudo apt-get install -y \
+ apt-get update
+ apt-get install -y \
   google-chrome-stable \
   libasound2 \
   libatk1.0-0 \
