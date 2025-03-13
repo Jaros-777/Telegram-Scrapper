@@ -5,9 +5,28 @@ const webLink = ["https://www.pracuj.pl/"];
 let jobOffert = [];
 
 const searchSpecificOffers = async () => {
+  let executablePath;
+
+  // Sprawdzamy, czy aplikacja działa na Render
+  if (process.env.IS_RENDER === 'true') {
+    // Na Render używamy Chromium, ponieważ nie ma tam Chrome
+    executablePath = "/usr/bin/chromium-browser";  // Ścieżka do Chromium na Render (lub można ją sprawdzić)
+  } else {
+    // Jeśli działamy lokalnie, sprawdzamy, czy Chrome jest zainstalowane
+    try {
+      // Jeśli masz Puppeteer zainstalowane z opcją, która instaluje przeglądarkę, używamy domyślnej ścieżki
+      executablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+      
+    } catch (error) {
+      console.error("Puppeteer nie może znaleźć przeglądarki, sprawdź instalację.");
+      throw error;
+    }
+  }
+
+
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: puppeteer.executablePath(),
+    executablePath,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
