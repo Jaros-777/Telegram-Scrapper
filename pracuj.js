@@ -10,7 +10,7 @@ const searchSpecificOffers = async () => {
   // Sprawdzamy, czy aplikacja działa na Render
   if (process.env.IS_RENDER === 'true') {
     // Na Render używamy Chromium, ponieważ nie ma tam Chrome
-    executablePath = "/usr/bin/chromium-browser";  // Ścieżka do Chromium na Render (lub można ją sprawdzić)
+    executablePath = "/usr/bin/google-chrome-stable"; 
   } else {
     // Jeśli działamy lokalnie, sprawdzamy, czy Chrome jest zainstalowane
     try {
