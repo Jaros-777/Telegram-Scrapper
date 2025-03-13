@@ -36,8 +36,7 @@ const searchSpecificOffers = async () => {
 
   //Selecting a categories
 
-  //await page.click('button[data-tab-value="It"]');
-  await page.click('button[tab-index="0"]');
+  await page.click('button[data-tab-value="It"]');
   await page.click(
     'button[data-test="filters-advanced-triggers-specializations-button"]'
   );
