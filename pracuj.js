@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import chromeLambda from "chrome-aws-lambda"
 import { telegramSendMessage } from "./telegramBot.js";
 
 const webLink = ["https://www.pracuj.pl/"];
@@ -7,15 +6,14 @@ let jobOffert = [];
 
 const searchSpecificOffers = async () => {
   const browser = await puppeteer.launch({
-    executablePath: "/usr/bin/google-chrome-stable",
+    headless: "new",
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
       "--disable-gpu",
       "--single-process"
-    ],
-    headless: true
+    ]
   });
   const page = await browser.newPage();
 

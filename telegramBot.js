@@ -19,10 +19,10 @@ export function telegramSendMessage(message) {
   bot
     .sendMessage(chatId, message)
     .then((respone) => {
-      console.log("Dziala");
+      console.log("Wiadomosc wyslana");
     })
     .catch((error) => {
-      console.log("Nie dziala");
+      console.log("Wiadomosc nie zostala wyslana");
     });
 }
 
