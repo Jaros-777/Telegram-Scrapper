@@ -21,6 +21,6 @@
     "pracuj-scrapping": "file:",
     "puppeteer": "^23.11.1",
     "puppeteer-cluster": "^0.24.0",
-    "puppeteer-core": "^21.3.0"
+    "puppeteer-core": "^24.4.0"
   }
 }

@@ -208,9 +208,9 @@ export async function searchInPracuj() {
   //console.log(jobOffert);
 
   for (let item of jobOffert) {
-    //console.log("item " + item);
-    //let messageToSend = `${item.title}\n\n  ${item.skills}\n\n  ${item.require}\n\n ${item.jobUrl}`
-    let messageToSend = `${item.title}\n\n`
+    let i = 1;
+
+    let messageToSend = `${i}. ${item.title}\n\n`
     item.skills.forEach((skill)=>{
       messageToSend += `- ${skill}\n`
     })
@@ -225,6 +225,7 @@ export async function searchInPracuj() {
 
     console.log(messageToSend);
     telegramSendMessage(messageToSend);
+    i++;
   }
 }
 
