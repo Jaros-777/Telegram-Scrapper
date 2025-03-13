@@ -7,22 +7,22 @@ npm install
 # npm run build # Uncomment if potrzebne
 
 # Instalacja Google Chrome i brakujących zależności
- apt-get update
- apt-get install -y \
-  google-chrome-stable \
-  libasound2 \
-  libatk1.0-0 \
-  libcups2 \
-  libdbus-1-3 \
-  libx11-xcb1 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxrandr2 \
-  libxss1 \
-  libxtst6 \
-  fonts-liberation \
-  libnss3 \
-  xdg-utils
+#  apt-get update
+#  apt-get install -y \
+#   google-chrome-stable \
+#   libasound2 \
+#   libatk1.0-0 \
+#   libcups2 \
+#   libdbus-1-3 \
+#   libx11-xcb1 \
+#   libxcomposite1 \
+#   libxdamage1 \
+#   libxrandr2 \
+#   libxss1 \
+#   libxtst6 \
+#   fonts-liberation \
+#   libnss3 \
+#   xdg-utils
 
 # Debugowanie ścieżki Chrome
 echo "Ścieżka Google Chrome:"
