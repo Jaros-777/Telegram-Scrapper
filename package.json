@@ -20,6 +20,7 @@
     "node-telegram-bot-api": "^0.66.0",
     "pracuj-scrapping": "file:",
     "puppeteer": "^23.11.1",
-    "puppeteer-cluster": "^0.24.0"
+    "puppeteer-cluster": "^0.24.0",
+    "puppeteer-core": "^21.3.0"
   }
 }
