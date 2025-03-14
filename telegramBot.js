@@ -1,7 +1,10 @@
-import TelegramBot from "node-telegram-bot-api";
+import { Telegraf } from "telegraf";
 import dotenv from "dotenv";
 import express from "express"
-import { searchInPracuj } from "./pracuj.js";
+//import { searchInPracuj } from "./pracuj.js";
+
+//process.once('SIGINT', () => bot.stop('SIGINT'))
+//process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
 dotenv.config();
 
@@ -10,47 +13,45 @@ const app = express();
 
 const token = process.env.TELEGRAM_TOKEN;
 
-const bot = new TelegramBot(token, { polling: true });
+const bot = new Telegraf(token);
 
 const chatId = process.env.USER_ID;
 
 
 export function telegramSendMessage(message) {
-  bot
-    .sendMessage(chatId, message)
-    .then((respone) => {
-      console.log("Wiadomosc wyslana");
-    })
-    .catch((error) => {
-      console.log("Wiadomosc nie zostala wyslana");
-    });
+  bot.telegram.sendMessage(chatId, message)
 }
 
 function mainTelegram() {
 
-  bot.onText(/\/start/, (msg) => {
+  bot.command('start', (msg) => {
     telegramSendMessage("Welcome user");
   });
-  bot.onText(/\/help/, (msg) => {
+  bot.command('help', async (ctx) => {
+    console.log('Wiadomość odebrana:', ctx.message.text);
     const message = "Commands:\n /help - pomoc\n /pracuj - ofert pracy ";
 
-    telegramSendMessage(message);
+    //telegramSendMessage(message);
+    await ctx.reply(message);
   });
-  bot.onText(/\/pracuj/, (msg) => {
+  bot.command('pracuj', (msg) => {
     telegramSendMessage("Zaczyna sie wyszukiwanie...");
-    searchInPracuj();
+    //searchInPracuj();
   });
 }
 
 
 
-// Endpoint Express - nasłuchiwanie na porcie
+//Endpoint Express - nasłuchiwanie na porcie
 app.get("/", (req, res) => {
   res.send("Serwer działa. Bot Telegram nasłuchuje.");
 });
 
 // Uruchomienie serwera Express
 app.listen(port, () => {
+  bot.launch();
   console.log(`Serwer nasłuchuje na porcie ${port}`);
+  
   mainTelegram();
+
 });

@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import {chromium} from "playwright";
 import { telegramSendMessage } from "./telegramBot.js";
 
 const webLink = ["https://www.pracuj.pl/"];
@@ -9,7 +9,7 @@ const searchSpecificOffers = async () => {
 
   // Sprawdzamy, czy aplikacja działa na Render
   if (process.env.IS_RENDER === 'true') {
-    executablePath = "/usr/bin/google-chrome-stable"; 
+    executablePath = "/usr/bin/chromium-browser"; 
   } else {
     try {
       executablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -23,8 +23,8 @@ const searchSpecificOffers = async () => {
 
 
 
-  const browser = await puppeteer.launch({
-    headless: "new",
+  const browser = await chromium.launch({
+    headless: true,
     executablePath,
     args: [
       "--no-sandbox",
